@@ -1,0 +1,31 @@
+{
+  "format": "mux-1",
+  "stream": "dossier",
+  "timescale": 1000,
+  "tracks": [
+    {
+      "id": 1,
+      "samples": [
+        40,
+        40
+      ],
+      "edits": [
+        {
+          "start": 0,
+          "duration": 40
+        },
+        {
+          "start": 40,
+          "duration": 40
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "samples": [
+        80,
+        80
+      ]
+    }
+  ]
+}

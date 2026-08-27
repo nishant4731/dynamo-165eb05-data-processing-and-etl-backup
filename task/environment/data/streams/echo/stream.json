@@ -1,0 +1,15 @@
+{
+  "format": "mux-1",
+  "stream": "echo",
+  "timescale": 30000,
+  "tracks": [
+    {
+      "id": 1,
+      "samples": [
+        1001,
+        1001,
+        1001
+      ]
+    }
+  ]
+}

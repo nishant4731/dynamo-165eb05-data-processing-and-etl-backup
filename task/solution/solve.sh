@@ -1,8 +1,6 @@
 #!/bin/bash
-#
-# Your reference (Oracle) solution — it must correctly complete the task, proving the
-# task is solvable. Harbor mounts solution/ at /solution/ and runs this script.
-# Put the real logic in helpers (e.g. solution/solve.py) and call them from here, and
-# write outputs to the absolute paths named in instruction.md (e.g. /app/output.json).
-
-# e.g.: python3 /solution/solve.py
+# The reference solution: drop the corrected resolver into place. Nothing else — no network, no reliance
+# on anything under /tests, and the recovery helper is not run here (it exists so a reviewer can confirm
+# the seal's constants come out of the published pairs alone).
+set -e
+install -m 0644 /solution/mux.py /app/mux/mux.py

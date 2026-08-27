@@ -1,0 +1,17 @@
+{
+  "format": "mux-1",
+  "stream": "cadence",
+  "timescale": 90,
+  "tracks": [
+    {
+      "id": 1,
+      "samples": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ]
+    }
+  ]
+}
