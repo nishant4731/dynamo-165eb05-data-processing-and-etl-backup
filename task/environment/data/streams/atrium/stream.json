@@ -1,0 +1,15 @@
+{
+  "format": "mux-1",
+  "stream": "atrium",
+  "timescale": 1000,
+  "tracks": [
+    {
+      "id": 1,
+      "samples": [
+        40,
+        40,
+        40
+      ]
+    }
+  ]
+}

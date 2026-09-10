@@ -1,0 +1,105 @@
+# Every stream this tooling has sealed: one exact (canonical text -> seal) pair per line.
+# The pairs settle the sealing arithmetic; data/SPEC.md, section The seal, lists what it is not.
+#
+# How the file is arranged, which is a fact about it rather than advice: the first seventy-two lines
+# are eight families of nine. Within a family the texts are identical but for their closing byte,
+# so the register arrives at that byte holding one value for all nine members, and the nine
+# seals expose directly how one byte position is consumed against a single unknown carried
+# register. Two different families agree nowhere useful — their texts diverge earlier, so the
+# registers they carry in are unrelated and one family says nothing about another. The
+# remaining eighteen lines are assorted streams that share none of those registers, spread so that
+# every byte one of these texts can hold appears somewhere above.
+#
+# A fact about the constants rather than about the file: each of them is a full-width value
+# above a billion, so none lies in a range that trying candidates in order can reach.
+
+keyframe/12+1     1892876045
+keyframe/12+2     230074534
+keyframe/12+3     1703908208
+keyframe/12+4     796978045
+keyframe/12+5     2270811719
+keyframe/12+6     608010208
+keyframe/12+7     2081843882
+keyframe/12+8     2421870534
+keyframe/12+9     1137004697
+muxpoint/6+1      571100754
+muxpoint/6+2      1855966591
+muxpoint/6+3      382132917
+muxpoint/6+4      2422870102
+muxpoint/6+5      949036428
+muxpoint/6+6      2233902265
+muxpoint/6+7      760068591
+muxpoint/6+8      42106265
+muxpoint/6+9      1326972102
+gopclose/21+1     1879507818
+gopclose/21+2     783609818
+gopclose/21+3     2068475655
+gopclose/21+4     972577655
+gopclose/21+5     2257443492
+gopclose/21+6     1161545492
+gopclose/21+7     2446411329
+gopclose/21+8     2597470144
+gopclose/21+9     1123636470
+waveform/3+1      2322610387
+waveform/3+2      848776713
+waveform/3+3      2133642550
+waveform/3+4      1415680224
+waveform/3+5      2700546061
+waveform/3+6      1226712387
+waveform/3+7      2511578224
+waveform/3+8      281873202
+waveform/3+9      1566739039
+chapter/18+1      2676532140
+chapter/18+2      1580634140
+chapter/18+3      106800466
+chapter/18+4      1769601977
+chapter/18+5      295768303
+chapter/18+6      1958569814
+chapter/18+7      484736140
+chapter/18+8      635794955
+chapter/18+9      1920660792
+loudness/30+1     222220362
+loudness/30+2     1318118362
+loudness/30+3     33252525
+loudness/30+4     1129150525
+loudness/30+5     2602984199
+loudness/30+6     940182688
+loudness/30+7     2414016362
+loudness/30+8     2262957547
+loudness/30+9     978091710
+sidecar/15+1      478638543
+sidecar/15+2      1763504380
+sidecar/15+3      289670706
+sidecar/15+4      2330407891
+sidecar/15+5      856574217
+sidecar/15+6      2141440054
+sidecar/15+7      667606380
+sidecar/15+8      2708343565
+sidecar/15+9      1234509891
+timebase/24+1     63008200
+timebase/24+2     1536841874
+timebase/24+3     251976037
+timebase/24+4     969938363
+timebase/24+5     2443772037
+timebase/24+6     1158906200
+timebase/24+7     2632739874
+timebase/24+8     2103745385
+timebase/24+9     818879548
+aspect/5+2        1395136156
+bframe/14+7       1105231742
+codec/22+9        2215816523
+dropframe/4+1     1803302542
+envelope/38+15    1374620819
+fielding/8+3      1715827692
+gamma/17+11       1428131438
+hinttrack/29+20   1171255025
+interlace/44+26   1420398968
+jitter/9+4        1948939235
+kerning/16+10     1799676408
+lipsync/25+13     175512324
+metadata/2+1      1465967716
+nalunit/35+22     1150739521
+overscan/11+6     427632236
+pulldown/33+18    1184073796
+quantizer/41+28   1872758329
+rendition/7+5     2020547053

@@ -1,0 +1,5 @@
+# The static check wants a .dockerignore for a build context with subdirectories. Everything the agent
+# needs — data/, mux/, selfcheck.py — must still reach the image, so only build residue is excluded.
+__pycache__/
+*.pyc
+.pytest_cache/

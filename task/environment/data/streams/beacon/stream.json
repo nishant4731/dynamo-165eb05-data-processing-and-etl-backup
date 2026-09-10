@@ -1,0 +1,22 @@
+{
+  "format": "mux-1",
+  "stream": "beacon",
+  "timescale": 600,
+  "tracks": [
+    {
+      "id": 1,
+      "samples": [
+        20,
+        20,
+        20,
+        20
+      ],
+      "edits": [
+        {
+          "start": 0,
+          "duration": 80
+        }
+      ]
+    }
+  ]
+}
