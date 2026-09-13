@@ -44,11 +44,12 @@ precisely what the worked streams are, and shifts every sample after the gap on 
 half-open window is the same shape of trap from the other side — a sample starting exactly where an edit
 ends belongs to the next edit, or to nothing at all.
 
-The last rule cannot be read anywhere. A stream holding an empty edit carries a seal over its own canonical
-text, and the arithmetic behind it is not written down. `data/SEALS.txt` publishes 90 exact pairs — eight
-families of nine whose texts part only in their closing byte — and those pairs determine one update and no
-other, but recovering it takes algebra rather than lookup: no graded stream's canonical text appears in that
-file, and the register is never reduced modulo a power of two.
+The seal fold is written down: one XOR–multiply–modulo step per byte with three constants fixed for every
+stream. `data/SEALS.txt` publishes 90 exact pairs that pin those constants, structured as eight families of
+nine whose texts part only in their closing byte. Recovering the numbers takes algebra rather than lookup,
+and no graded stream's canonical text appears in that file. Zero-duration samples stack several indices on
+the same media start; the worked streams never exercise that shape, so a resolver that only replays the
+self-check still learns nothing about coincident indices.
 """
 solution_explanation = """
 Read SPEC.md and audit the shipped resolver against it rather than against the self-check, which is green on
@@ -69,17 +70,14 @@ dropped and reported with a `-`.
 And the seal is not emitted at all, so every stream holding an empty edit has a summary line one field
 short.
 
-The seal is recovered from `data/SEALS.txt`: within one of its eight families the texts agree but for the
-final byte, so the register carried into that byte is the same for all nine members and the nine seals
-expose how one byte position is consumed against a single unknown. Cross-multiplying two of those
-differences cancels the multiplier and leaves a multiple of the modulus; agreement between families gives
-the modulus, the multiplier follows by modular inverse once the register's low bits are pinned, and the
-starting register falls out of a backward walk. `solution/recover_seal.py` does exactly that from the
-published file alone, and verifies its answer against all 90 pairs rather than trusting the first candidate
-the algebra offers.
+The reference loads the three seal constants from `/app/data/SEALS.txt` at import time using the fold named
+in SPEC.md — cross-multiplying family differences cancels the multiplier and leaves a multiple of the
+modulus; agreement between families gives the modulus, the multiplier follows by modular inverse once the
+register's low bits are pinned, and the starting register falls out of a backward walk. `solution/recover_seal.py`
+is the same recovery written as a standalone checker for reviewers.
 """
 verification_explanation = """
-Grading is deterministic and all-or-nothing over 5 worked streams plus 43 fixed graded ones, each compared
+Grading is deterministic and all-or-nothing over 5 worked streams plus 46 fixed graded ones, each compared
 exactly and in order against a trusted resolver in `tests/_trusted/model.py`. Nothing is sampled, nothing is
 random, and no tolerance is applied anywhere — every reported time is an exact integer millisecond, so a
 listing either equals the trusted one line for line or that stream fails.
@@ -88,14 +86,14 @@ The trusted resolver is written independently of the reference rather than deriv
 each sample in turn, which edit presents it, where the reference walks the edit list once and claims the
 samples each edit covers. Agreement between them means the rules agree, not that one is a copy of the other.
 That agreement was checked while building the task over the whole corpus and over 4000 randomly generated
-streams; the shipped verifier grades the 48 fixed streams, which is what the reward is computed from.
+streams; the shipped verifier grades the 51 fixed streams, which is what the reward is computed from.
 
 The submission runs once, in an unprivileged child as `nobody` with an empty `PYTHONPATH` and a working
 directory outside `/app`, and writes a single plain-text transcript in which each stream's answer is framed
 by its own label. The streams are staged under neutral names in a shuffled order, so nothing the child
 receives says which stream it is answering. Parsing one transcript rather than trusting an exit status means
-a stream the submission raises on is recorded as that stream's failure and the remaining forty-seven are
-still judged. The trusted corpus is locked to 0700 and an unprivileged probe asserts it is unreadable; the
+a stream the submission raises on is recorded as that stream's failure and the remaining fifty are still
+judged. The trusted corpus is locked to 0700 and an unprivileged probe asserts it is unreadable; the
 shipped spec, published pairs and self-check are SHA-pinned so a run is never graded against its own edit of
 them; and containment is checked as four named claims collected together, so a linked parent directory or a
 path resolving outside `/app` is named as the specific bypass it is.

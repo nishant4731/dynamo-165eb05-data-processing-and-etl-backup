@@ -113,6 +113,12 @@ def _graded():
     add("emptyedits", 1000, [_t(1, [40, 40], [])])
     add("longrun", 1000, [_t(1, [40] * 10, [_e(120, 200)])])
 
+    # Zero-duration samples stack several indices on the same media start; each index is still reported,
+    # and out-of-order edits must place every coincident index independently.
+    add("coincident", 1000, [_t(1, [40, 0, 40], [_e(0, 80)])])
+    add("triplestack", 1000, [_t(1, [20, 0, 0, 20], [_e(0, 40)])])
+    add("coinoverlap", 1000, [_t(1, [40, 0, 40, 40], [_e(40, 80), _e(0, 40)])])
+
     # Everything at once.
     add("tangled", 600, [_t(1, [20, 20, 20, 20], [_e(-1, 25), _e(40, 40), _e(0, 40)]),
                          _t(2, [30, 30], [_e(30, 30)])])

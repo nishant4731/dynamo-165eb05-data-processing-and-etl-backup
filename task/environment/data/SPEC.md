@@ -88,33 +88,35 @@ edits, the timescale, or anything else about the stream. Two streams whose canon
 equal seals, and every pair below was produced by the same function you are asked to recover, so the pairs
 alone determine it.
 
-Sealing walks that text one byte at a time. There is a single starting register, one update per byte in
-left-to-right order, the same constants for every stream this tooling has ever sealed, and whatever the
-register holds at the end is the seal. The update is one expression evaluated the same way at every step:
-no case analysis, no exception at a particular register or byte value, and no dependence on how far into
-the text it has reached.
+Sealing walks that text one byte at a time, left to right. There is a single integer **starting register**
+`S`, one update per byte, the same three constants for every stream this tooling has ever sealed, and
+whatever the register holds after the last byte is the seal. The update is exactly one expression at every
+step — no case analysis, no exception at a particular register or byte value, and no dependence on how far
+into the text the walk has reached.
 
-**The update's arithmetic and constants are not documented here.** It is not a standard checksum — CRC-32
-at any polynomial or reflection, Adler-32, Fletcher-32, FNV-1, FNV-1a, djb2, sdbm, Jenkins, a plain,
-weighted or modular sum or XOR of the bytes, and any leading part of a cryptographic digest all fail to
-reproduce the published pairs, so trying to recognise it is a dead end. Every name in that list is a whole
-published checksum that does not reproduce the pairs; the list rules out those checksums, and says nothing
-about which arithmetic operations a single step may be built from. The register is never reduced modulo a
-power of two, so it is not machine-word wraparound either.
+At each byte `b`, read as an unsigned value from 0 through 255, the register becomes
 
-It is also **not a linear congruential fold** — one where the byte is added into the register and the whole
-is then multiplied. In any fold of that family the byte enters linearly, so differencing two pairs cancels
-the register and a gcd over the residuals recovers the modulus directly. That family has been tried against
-the pairs below and does not reproduce them: fitting one gives a gcd of 1, and that is the family being
-ruled out, not a corpus too small to decide. What the update is remains for you to find.
+    register ← ((register XOR b) × multiplier) mod modulus
 
-You **recover it from the disclosed evidence**, which is enough to pin it. `data/SEALS.txt` publishes 90
-exact `(canonical text -> seal)` pairs. Seventy-two of them are eight families of nine: inside one family
-the texts are identical but for their closing byte, so the register arriving at that byte is the same for
-all nine members, and the nine seals expose directly how one byte position is consumed against a single
-unknown carried register — which is what turns recognising the arithmetic into eliminating it. The eight
-families carry eight unrelated registers, and the remaining eighteen pairs share none of them, so exactly
-one update reproduces all 90.
+where `modulus` and `multiplier` are fixed positive integers and `modulus` is not a power of two. The three
+numbers `(modulus, multiplier, starting register)` are not printed here as literals; they are **uniquely
+determined** by the 90 exact `(canonical text → seal)` pairs in `data/SEALS.txt`. Exactly one choice
+reproduces every published pair, and that choice is the one the resolver must use.
+
+`data/SEALS.txt` is structured so the constants can be recovered from the pairs alone once the update above
+is known. Seventy-two pairs fall into eight families of nine: inside one family the texts are identical but
+for their closing byte, so the register arriving at that byte is the same for all nine members, and the nine
+seals expose how one byte position is consumed against a single unknown carried register. The eight
+families carry eight unrelated registers, and the remaining eighteen pairs share none of them — together
+they pin the modulus, the multiplier, and the starting register.
+
+The fold is **not** any of the usual checksums — CRC-32 at any polynomial or reflection, Adler-32,
+Fletcher-32, FNV-1, FNV-1a, djb2, sdbm, Jenkins, a plain, weighted or modular sum or XOR of the bytes,
+or any leading part of a cryptographic digest — and those names are ruled out because none of them
+reproduce the published pairs. It is also **not a linear congruential fold** where the byte is added into
+the register and the whole is then multiplied: in that family the byte enters linearly, differencing two
+pairs cancels the register, and a gcd over the residuals recovers the modulus directly. That family has
+been tried against the pairs below and does not reproduce them.
 
 Not one of the canonical texts a graded stream produces appears in `data/SEALS.txt`, so reading a seal out
 of that file cannot answer a single graded stream.
@@ -124,6 +126,7 @@ of that file cannot answer a single graded stream.
 `/app/data/streams/<name>/stream.json` holds five worked streams and `python3 /app/selfcheck.py` replays
 them. They pin the media timeline, the millisecond conversion and its half-to-even rounding, several tracks
 in one stream, and an edit list that presents the whole timeline unchanged. **Not one of them holds an
-empty edit, not one trims a sample away, and none therefore carries a seal.** So gaps, trimming and the
-seal are all unobserved there, and reproducing the worked streams says nothing about any of them — the 43
-graded streams are full of all three.
+empty edit, not one trims a sample away, none therefore carries a seal, and none stacks several sample indices on the same media start through
+zero-duration samples.** So gaps, trimming, the seal, and coincident sample indices are all unobserved
+there, and reproducing the worked streams says nothing about any of them — the 46 graded streams exercise
+every omitted rule.

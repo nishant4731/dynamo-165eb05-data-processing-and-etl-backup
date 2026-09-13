@@ -18,8 +18,9 @@ and `time` is a single `-`. Then one summary line
     *<TAB><kept><TAB><dropped>
 
 A stream in which any track holds an empty edit carries a fourth field on that line, the **seal** of its
-canonical text. What that field holds, and the evidence in `/app/data/SEALS.txt` that determines it, are set
-out in `/app/data/SPEC.md`.
+canonical text. `/app/data/SPEC.md` names the exact byte-wise fold, names the three constants it depends on,
+and points at `/app/data/SEALS.txt` as the evidence that pins those constants. Recover the constants from
+the pairs before you seal a graded stream — no graded canonical text appears in that file.
 
 `/app/data/SPEC.md` is the contract. It fixes how a track's media timeline is built, what an edit presents
 and what it does to the presentation clock, which edit claims a sample when several cover it, when a sample
@@ -29,8 +30,9 @@ prints. Every graded answer follows from it.
 `python3 /app/selfcheck.py` replays the five worked streams and reports which ones the module reproduces. It
 reports five of five before a line is changed and keeps reporting it through every repair, because the
 worked streams are not where the difficulty is: not one of them holds an empty edit, not one trims a sample
-away, and none therefore carries a seal. SPEC.md says so plainly. The same trusted tooling resolves those
-worked streams and 43 unseen ones, and the unseen streams are full of all three.
+away, none carries a seal, and none stacks several sample indices on the same media start through zero-duration
+samples. SPEC.md says which rules the worked streams leave untouched. The same trusted tooling resolves
+those worked streams and 46 unseen ones, and the unseen streams exercise every omitted rule.
 
 The module must import cleanly. You may add helper modules under `/app` and import them from there. Every
 file you leave under `/app`, the deliverable included, must be a regular file and not a symlink. Leave

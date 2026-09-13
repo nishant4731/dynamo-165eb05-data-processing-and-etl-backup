@@ -82,13 +82,13 @@ grade "the self-check edited" 0 "bash /solution/solve.sh; printf '\n' >> /app/se
 flip "the seal is always zero" \
   "src = src.replace('_seal(\"%s/%d+%d\" % (spec[\"stream\"], kept, dropped))', '0')"
 flip "the seal multiplier is off by one" \
-  "src = src.replace('SEAL_MULT = 1284865837', 'SEAL_MULT = 1284865838')"
+  "src = src.replace('register = ((register ^ byte) * SEAL_MULT) % SEAL_MOD', 'register = ((register ^ byte) * (SEAL_MULT + 1)) % SEAL_MOD')"
 flip "the seal modulus is off by one" \
-  "src = src.replace('SEAL_MOD = 2758699511', 'SEAL_MOD = 2758699512')"
+  "src = src.replace('register = ((register ^ byte) * SEAL_MULT) % SEAL_MOD', 'register = ((register ^ byte) * SEAL_MULT) % (SEAL_MOD + 1)')"
 flip "the seal starting register is off by one" \
-  "src = src.replace('SEAL_SEED = 1926403913', 'SEAL_SEED = 1926403914')"
+  "src = src.replace('register = SEAL_SEED', 'register = SEAL_SEED + 1')"
 flip "the seal uses a power of two modulus" \
-  "src = src.replace('SEAL_MOD = 2758699511', 'SEAL_MOD = 4294967296')"
+  "src = src.replace('register = ((register ^ byte) * SEAL_MULT) % SEAL_MOD', 'register = ((register ^ byte) * SEAL_MULT) % (2 ** 32)')"
 flip "the seal text swaps its two counts" \
   "src = src.replace('(spec[\"stream\"], kept, dropped)', '(spec[\"stream\"], dropped, kept)')"
 flip "the seal is emitted on every stream" \

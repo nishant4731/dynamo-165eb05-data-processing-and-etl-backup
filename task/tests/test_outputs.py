@@ -192,8 +192,20 @@ def test_the_pairs_file_answers_no_graded_stream():
     assert not shared, "these graded canonical texts are published: %s" % shared
 
 
+def test_the_disclosed_seal_fold_reproduces_every_published_pair():
+    """SPEC.md names the byte-wise fold; the published pairs must all agree with that fold under model.seal."""
+    pairs = {}
+    for line in (APP / "data" / "SEALS.txt").read_text().splitlines():
+        line = line.strip()
+        if line and not line.startswith("#"):
+            text, value = line.rsplit(None, 1)
+            pairs[text] = int(value)
+    bad = sorted(text for text, value in pairs.items() if model.seal(text) != value)
+    assert not bad, "published pairs disagree with the disclosed fold: %s" % bad[:5]
+
+
 def test_the_transcript_is_not_empty(transcript):
-    """Say once that the module never ran, instead of repeating it for all forty-eight streams."""
+    """Say once that the module never ran, instead of repeating it for all fifty-one streams."""
     assert any(lines is not None for lines in transcript.values()), \
         "no frame in the transcript holds an answer — the submission did not import, or never resolved"
 

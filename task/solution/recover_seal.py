@@ -2,9 +2,9 @@
 """Recover the seal's three constants from data/SEALS.txt alone.
 
 Not part of the graded deliverable and not run by solve.sh — it exists so a reviewer can confirm the
-published pairs really do determine the fold, without being told the arithmetic.
+published pairs really do pin the constants named in SPEC.md.
 
-The step is `register = ((register ^ byte) * MULT) % MOD`. Inside one published family the texts are
+The step named in SPEC.md is `register = ((register ^ byte) * MULT) % MOD`. Inside one published family the texts are
 identical but for their closing byte, so every member carries the same unknown register L into that byte:
 
     seal_i = ((L ^ b_i) * MULT) mod MOD
